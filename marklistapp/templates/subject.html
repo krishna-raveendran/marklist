@@ -1,0 +1,138 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>subject</title>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  margin-top: 50px;
+}
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px !important;
+  font-family: monospace;
+}
+.input-edit{
+	position: absolute;
+    width: 93%;
+    height: 91%;
+    top: 0;
+    left: 0;
+    outline: none;
+    border: none;
+    padding-left: 6px;
+    font-size: 20px;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease-in-out;
+
+}
+.edit-col{
+	display: none;
+	margin-top: 0px
+}
+.sub-row.show .input-edit{
+	opacity: 1;
+	pointer-events: all;
+}
+.sub-wrapper{
+	position: relative;
+
+}
+.edit-button{
+	width: 128px;
+}
+</style>
+</head>
+<body>
+<table>
+
+
+	<thead>
+		<th>SUBJECTLIST</th>
+		<th>REMOVE</th>
+		<th colspan="2">UPDATE/EDIT</th>
+	</thead>
+	
+	<tbody>
+
+		{% for i in subjectlist %}
+		
+		<tr class="sub-row">
+			<form action="/updatesubject/{{i.subid}}/" method="post">
+			 {% csrf_token %}
+
+			<td class="sub-wrapper">{{i.subjects}}<input type="text" name="subnew" class="input-edit" value="{{i.subjects}}"></td><td><a class="button" href="/deletesubject/{{i.subid}}/">DELETE</a><input type="hidden" value="{{i.subid}}"></td>
+			
+			<td><div class ="button"input type="hidden" value="{{i.subid}}"><input type="submit" value="UPDATE"name="editsub">
+			</div>
+			</td>
+		    </form>
+			<td><button class="button edit-button">EDIT</button><input type="hidden" value="{{i.subid}}"></td>
+
+			
+		</tr>
+		{% endfor %}
+		<!-- <tr> -->
+			<!-- <td>science</td><td><button type="button">DELETE</button></td> -->
+		<!-- </tr> -->
+	</tbody>
+</table>
+
+<form method="post" action="/subject/">{% csrf_token %}
+		<div>
+			subject:<input type="text" name="subname" required/>
+		</div>
+		<div>
+			max&nbsp;:<input type="number" name="marks" required/>
+		</div>
+		<div>
+			<input type="submit" value="save" name="btnsave"/>
+			<input type="reset" value="cancel"/>
+		</div>
+        <span style="color:red">{{Try...again}} </span>
+</form>
+<script src="/static/jquery-2.1.4.min.js"></script>
+<script src="/static/jquery-ui.js"></script>
+<script>
+   $(document).ready(function(){
+// subject edit
+  $('.sub-row').each(function () {
+  	var clicked = $(this);
+    clicked.find('.edit-button').click(function(){
+
+      $(this).html() == "EDIT" ? $(this).html('CANCEL') : $(this).html('EDIT');
+      $(this).closest('.sub-row').toggleClass('show');
+      $(this).closest('.sub-row').find('.input-edit').focus();
+
+      // alert("The paragraph was clicked.");
+    });
+   
+
+
+  });
+
+});
+
+</script>
+</body>
+</html>
+
+
+
+	
+
+
+
+
+		

@@ -1,0 +1,123 @@
+
+<head>
+    <title>
+    {% block title %}
+             
+        marklist
+        
+              {% endblock %}
+     </title>
+<style>
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+/*tr:nth-child(even) {
+    background-color: #dddddd;
+}*/
+tr {
+    background-color: lightblue;
+}
+.amt{
+    text-align:right;
+}
+</style>
+<a href="http://localhost:8000/subject/"> EDIT/UPDATE SUBJECTS<a>
+  
+<script src="/static/jquery-2.1.4.min.js"></script>
+<script src="/static/jquery-ui.js"></script>
+<script>
+   $(document).ready(function(){
+
+    $('.mark').on('change', function () {
+    var total = 0; 
+    var maxmark = $(this).closest('tr').find('.max-marks').val();
+    if (!isNaN(maxmark) && maxmark >0 && $(this).val() > maxmark){
+          // console.log(maxmark);
+          alert('Enter value less than ' + maxmark + '')
+          $(this).val('0');
+        }
+    $('.mark').each(function () {
+      var value = $(this).val();
+      
+        
+            if (isNaN(value) || value == '')
+        value = 0;
+      total = parseFloat(total) + parseFloat(value);
+      if (isNaN(total))
+        total = 0;
+    });
+  
+    $('#lblTotal').val(total).change(); //$scope().val(tot);
+         
+     });
+
+   });
+</script>
+   </head>
+   <body>
+    
+      <table id="myTable" class="table table-bordered table-striped table-fixed">
+
+         <thead>
+<tr><td  colspan="2"><span style="font-size:large">ABC SCHOOL</span></td></tr>
+<tr><td>Classes</td><td>From<input type="Text" name="fr" style="width:50px">To<input type="Text" name="to" style="width:50px"></td></tr>
+  <tr><td  colspan="2">Student:<input type="text" placeholder="student name" name="studnam" id="studnam" style="with:400px;" required></td></tr>
+            <th>Subject</th>
+            <th>Mark</th>
+          
+         </thead>
+
+
+         <tbody>
+          {% for i in subjectlist %}
+          <tr><td>{{i.subjects}}</td><td><input type="number" min=0 max="100" class="mark" name="mark1">
+           <input type="hidden" value="{{i.maxmarks}}" id= "maxmarks" class= "max-marks"></td></tr>
+          {% endfor %}
+   <!--  <tr><td>Maths</td><td><input type="number" min=0 max="100" class="mark" name="mark1"></td></tr>
+    <tr><td>Physics</td><td><input type="number" min=0 max="100" class="mark" name="mark1"></td></tr>
+    <tr><td>Chemistry</td><td><input type="number" min=0 max="100" class="mark" name="mark1"></td></tr>
+    <tr><td>Biology</td><td><input type="number" min=0 max="100" class="mark" name="mark1"></td></tr> -->
+  
+<tr><td>Total</td><td><input type="Label" name="lblTotal" id="lblTotal" style="width:40%; font-weight:bold;text-align:right;"  readonly/></td></tr>
+  </tbody>  
+      </table>
+      <button id="convert">
+      Prepare Card
+      </button>
+      <div id="result">
+         <!-- Result will appear be here -->
+      </div>
+      <script type="text/javascript" src="/static/html2canvas.js"></script>
+<script>
+         //convert table to image            
+         function convertToImage() {
+            var resultDiv = document.getElementById("result");
+            html2canvas(document.getElementById("myTable"), {
+    scale:2,
+                onrendered: function(canvas) {
+                    var img = canvas.toDataURL("image/png");
+    //uri = img.replace(/^data:image\/[^;]/, 'data:application/octet-stream');
+      uri=img;
+        var fnam= document.getElementById("studnam").value;
+                    result.innerHTML = '<a download='+fnam+'_card.png href="'+uri+'">Download Card</a>';
+                    }
+            });
+         }        
+         //click event
+         var convertBtn = document.getElementById("convert");
+         convertBtn.addEventListener('click', convertToImage);
+      </script>
+      
+</html>  
+
+
