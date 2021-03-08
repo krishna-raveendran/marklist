@@ -30,7 +30,7 @@ def signup(request):
       string=uuid.uuid4().hex
       password=string[-4:]
       print(password)
-      send_mail( f"Hello '{un}' Your registration was succesful", f"new acount password :'{password}'",'krishna1024ray@gmail.com',[m],fail_silently=False)
+      send_mail( f"Hello '{un}' Your registration was succesful", f"new acount password :'{password}'",'krishna@gmail.com',[m],fail_silently=False)
       # email = EmailMessage('Account verification', f"Hello '{un}' Your registration was succesful", f"new acount password :'{password}'", to=[m])
       # email.send()
     
